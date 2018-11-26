@@ -1,22 +1,42 @@
 <template>
   <div>
-    <!-- render data of the person -->
-    <h1>記事一覧</h1>
-    {{ posts }}
+    <section class="hero is-medium is-primary is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Welcome to the JavaScript SSR Blog.
+          </h1>
+          <h2 class="subtitle">
+            <li
+              v-for="(post,index) in posts"
+              :key="index">
+              {{ post.fields.title }}
+            </li>
+          </h2>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
   import {createClient} from '~/plugins/contentful.js'
-
   const client = createClient()
-
   export default {
-    // `env` is available in the context object
-    async asyncData ({env}) {
-      return await client
-      .getEntries(env.CTF_BLOG_POST_TYPE_ID)
-      .then(entries => {
+    head: {
+      title: 'Home'
+    },
+    data () {
+      return {
+        posts: [],
+      }
+    },
+    asyncData ({ env }) {
+      return client.getEntries({
+        'content_type': env.CTF_BLOG_POST_TYPE_ID,
+        order: '-fields.publishDate',
+        'limit': 3
+      }).then((entries) => {
         return {
           posts: entries.items
         }
