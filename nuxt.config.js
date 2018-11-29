@@ -28,13 +28,15 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    'element-ui/lib/theme-chalk/index.css'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~plugins/contentful' }
+    '@/plugins/element-ui',
+    '@/plugins/contentful'
   ],
 
   /*
